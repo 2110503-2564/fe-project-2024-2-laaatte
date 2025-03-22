@@ -1,10 +1,11 @@
-import Image from "next/image";
-import Banner from "@/component/Banner";
+import Banner from "@/components/Banner";
+import TravelCard from "@/components/TravelCard";
 
 export default function Home() {
   return (
     <main >
-      <Banner></Banner>
+      <Banner/>
+      <TravelCard/>
     </main>
   );
 }
