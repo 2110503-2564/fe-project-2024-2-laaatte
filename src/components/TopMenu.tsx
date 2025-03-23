@@ -32,11 +32,19 @@ export default async function TopMenu() {
                     </div>
                 </MuiLink> 
                     :
+                    <>
                 <MuiLink href="/api/auth/signin">
                     <div className='flex items-center h-full px-2 text-cyan-600 text-sm'>
                         Sign-In
                     </div>
+                </MuiLink> 
+                <div className='flex items-center h-full text-cyan-600 text-sm'>/</div>
+                <MuiLink href="/api/auth/register">
+                <div className='flex items-center h-full px-2 text-cyan-600 text-sm'>
+                    Register
+                </div>
                 </MuiLink>
+                </>
             }
             </div>
         </div>
