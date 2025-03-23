@@ -3,25 +3,36 @@ import LocationDateReserve from "@/components/DateReserve";
 import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import DateReserve from "@/components/DateReserve";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import createReservation from "@/libs/createReservation";
 import { useSession } from "next-auth/react";
 import getUserProfile from "@/libs/getUserProfile";
+import { useRouter } from "next/navigation";
 
 
 export default function Reservations() {
+    const router = useRouter()
 
     const urlParams = useSearchParams()
     const cid = urlParams.get('id')
     const campground = urlParams.get('name')
     const picture = urlParams.get('picture')
 
+    useEffect(() => {
+        if (!cid) {
+          router.push('/campground'); // 👈 Redirect if no cid
+        }
+        }, [cid, router]);
+
+
     const [reserveDate, setReserveDate] = useState<Dayjs|null>(null)
     const [time, setTime ] = useState<Dayjs|null>(null)
+    const [showPopup, setShowPopup] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {data : session} = useSession();
-    if (!session?.user.token) 
+    if (!session?.user.token || !cid) 
         return
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -32,26 +43,36 @@ export default function Reservations() {
             return
         }
 
+        setLoading(true);
+
         const fullDateTime = reserveDate.hour(time.hour()).minute(time.minute()).second(0).millisecond(0)
 
         const jsDate = fullDateTime.toDate()
         console.log('Submitting form:', jsDate);
 
-        const userData = getUserProfile(session?.user.token)
+        const userData = await getUserProfile(session?.user.token)
 
         console.log(userData)
 
-        // try {
-        //     const response = await createReservation(cid,session?.user.token,jsDate,session?.user._id);
-        //     console.log('Reservation Response:', response);
+        try {
+            const response = await createReservation(cid, session?.user.token, jsDate, session?.user._id);
+            console.log('Reservation Response:', response);
     
-        //     if (!response.success)
-        //         alert(response?.message || 'Registration failed');
-        // } catch (error: any) {
-        //     console.error('Registration error:', error);
-        //     alert(error.message || 'Something went wrong!');
-        // }
-
+            if (!response.success)
+                alert(response?.message || 'Registration failed');
+            else {
+            // ✅ Clear inputs & show success message
+            setReserveDate(null);
+            setTime(null);
+            setShowPopup(true);
+            setTimeout(() => setShowPopup(false), 2000);
+        }
+        } catch (error: any) {
+            console.error('Registration error:', error);
+            alert(error.message || 'Something went wrong!');
+        } finally {
+            setLoading(false); // ✅ Done loading
+        }
     };
 
 
@@ -73,12 +94,21 @@ export default function Reservations() {
                 </div>
                 <DateReserve onDateChange={(value:Dayjs)=>{setReserveDate(value)}} onTimeChange={(value:Dayjs)=>{setTime(value)}}></DateReserve>
                 {cid && //if dont have cid dont show button reserve
-                <button className="block rounded-md bg-sky-600 hover:bg-indigo-600 px-3 py-2 
-                text-white shadow-small mt-4"
-                onClick={handleSubmit}>
-                    Reserve this Campground
-                </button>}
+                    <button className={`block rounded-md px-3 py-2 mt-4 text-white shadow-small
+                    ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-indigo-600'}`}
+                        onClick={handleSubmit}
+                        disabled={loading} >
+                    {loading ? 'Reserving...' : 'Reserve this Campground'}
+                    </button>
+                }
             </div>
+            {showPopup &&
+            ( <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg p-6 shadow-xl text-center max-w-sm w-full">
+                <h2 className="text-xl font-bold text-green-600 mb-2">Reservation Complete 🎉</h2>
+                <p className="text-gray-700">Your campground has been successfully reserved.</p>
+                </div>
+            </div> )}
         </main>
     );
 }
