@@ -13,7 +13,7 @@ export default async function Home() {
     <main >
       <Banner/>
       <div className="mt-20 ">
-                <CampgroundCard campgroundJson = {campgrounds}/>
+      <CampgroundCard campgroundJson = {campgrounds}/>
       </div>
     </main>
   );
