@@ -1,6 +1,5 @@
 'use client'
-import LocationDateReserve from "@/components/DateReserve";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import DateReserve from "@/components/DateReserve";
 import { useEffect, useState } from "react";

@@ -1,15 +1,19 @@
 'use client'
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import styles from './banner.module.css'
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 
 export default function Banner() {
     const cover = ['/img/cover.jpg','/img/cover2.jpg','/img/cover3.jpg','/img/cover4.jpg','/img/cover5.jpg'];
     const [index , setIndex] = useState(0);
 
-    const router = useRouter();
+    useEffect(() => {
+        const interval = setInterval(() => {
+          setIndex((prevIndex) => (prevIndex + 1) % cover.length);
+        }, 5000);
+    
+        return () => clearInterval(interval); // Cleanup on unmount
+      }, []);
 
     return (
         <div className={styles.banner} onClick={() => { setIndex(index+1)}}>
