@@ -41,6 +41,11 @@ export const authOptions:AuthOptions = {
       async session({session, token, user}) {
         session.user = token as any
         return session
+      },
+      async redirect({ url, baseUrl }) {
+        // Always redirect to home after login/signout
+        return baseUrl;
       }
     }
 }
+
