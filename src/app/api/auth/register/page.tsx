@@ -13,22 +13,33 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form);
+    console.log('Submitting form:', form);
+
     try {
-      await userRegister(form.name, form.email, form.password, form.telephone);
-      router.push('/login'); // Go to login after successful registration
+      const response = await userRegister(form.name, form.email, form.password, form.telephone);
+      console.log('Registration Response:', response);
+
+      if (response?.success) { // เช็คว่าสมัครสำเร็จไหม
+        router.push("/api/auth/signin"); // ไปที่หน้า login
+      } else {
+        alert(response?.message || 'Registration failed');
+      }
     } catch (error: any) {
-      alert(error.message);
+      console.error('Registration error:', error);
+      alert(error.message || 'Something went wrong!');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" placeholder="Name" onChange={handleChange} required />
-      <input name="email" placeholder="Email" type="email" onChange={handleChange} required />
-      <input name="password" placeholder="Password" type="password" onChange={handleChange} required />
-      <input name="telephone" placeholder="Telephone" onChange={handleChange} required />
-      <button type="submit">Register</button>
-    </form>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-xl w-96 space-y-4">
+        <h2 className="text-2xl font-bold text-center text-gray-700">Register</h2>
+        <input name="name" placeholder="Name" onChange={handleChange} required className="w-full p-2 border rounded-lg" />
+        <input name="email" placeholder="Email" type="email" onChange={handleChange} required className="w-full p-2 border rounded-lg" />
+        <input name="password" placeholder="Password" type="password" onChange={handleChange} required className="w-full p-2 border rounded-lg" />
+        <input name="telephone" placeholder="Telephone" onChange={handleChange} required className="w-full p-2 border rounded-lg" />
+        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition">Register</button>
+      </form>
+    </div>
   );
 }
