@@ -28,7 +28,7 @@ export default async function TopMenu() {
                 session ? 
                 <MuiLink href="/api/auth/signout">
                     <div className='flex items-center h-full px-2 text-cyan-600 text-sm'>
-                        Sigh-Out of {session.user?.name}
+                        Sign-Out
                     </div>
                 </MuiLink> 
                     :
