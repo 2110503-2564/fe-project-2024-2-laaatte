@@ -6,6 +6,7 @@ import userRegister from '@/libs/userRegister';
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ name: '', email: '', password: '', telephone: '' });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,13 +14,19 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitting form:', form);
+    // console.log('Submitting form:', form);
+
+    setLoading(true);
 
     try {
       const response = await userRegister(form.name, form.email, form.password, form.telephone);
-      console.log('Registration Response:', response);
+      // console.log('Registration Response:', response);
 
       if (response?.success) { // เช็คว่าสมัครสำเร็จไหม
+        
+        
+        setLoading(false)
+        
         router.push("/api/auth/signin"); // ไปที่หน้า login
       } else {
         alert(response?.message || 'Registration failed');
@@ -27,7 +34,7 @@ export default function RegisterPage() {
     } catch (error: any) {
       console.error('Registration error:', error);
       alert(error.message || 'Something went wrong!');
-    }
+    } 
   };
 
   return (
@@ -38,7 +45,13 @@ export default function RegisterPage() {
         <input name="email" placeholder="Email" type="email" onChange={handleChange} required className="w-full p-2 border rounded-lg" />
         <input name="password" placeholder="Password" type="password" onChange={handleChange} required className="w-full p-2 border rounded-lg" />
         <input name="telephone" placeholder="Telephone" onChange={handleChange} required className="w-full p-2 border rounded-lg" />
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition">Register</button>
+        <button type="submit" 
+        className={`w-full text-white p-2 rounded-lg transition
+          ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-indigo-600'}`}
+          disabled={loading}
+        >
+          {loading ? 'Reserving...' : 'Register' }
+          </button>
       </form>
     </div>
   );

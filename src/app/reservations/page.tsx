@@ -49,10 +49,6 @@ export default function Reservations() {
         const jsDate = fullDateTime.toDate()
         console.log('Submitting form:', jsDate);
 
-        const userData = await getUserProfile(session?.user.token)
-
-        console.log(userData)
-
         try {
             const response = await createReservation(cid, session?.user.token, jsDate, session?.user._id);
             console.log('Reservation Response:', response);

@@ -15,6 +15,11 @@
 .logoimg {
     height: 100%;
     width: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.logoimg:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
 }
 
 .itemcontainer {
@@ -25,4 +30,11 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 10pt;
     color: grey;
+    transition: all 0.3s ease;
+}
+
+.itemcontainer:hover {
+    color: #1e90ff;
+    cursor: pointer;
+    transform: scale(1.05); /* Slight zoom on hover */
 }

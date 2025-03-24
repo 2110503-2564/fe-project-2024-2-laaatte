@@ -23,7 +23,7 @@ export default async function TopMenu() {
             <TopMenuItem title='Campground' pageRef='/campground'/>
             <TopMenuItem title='Reservation' pageRef='/reservations'/>
             <div className='flex flex-row absolute right-0 h-full'>
-            <TopMenuItem title='Cart' pageRef='/cart'/>
+            <TopMenuItem title='My Reservation' pageRef='/myreservation'/>
             {
                 session ? 
                 <MuiLink href="/api/auth/signout">
