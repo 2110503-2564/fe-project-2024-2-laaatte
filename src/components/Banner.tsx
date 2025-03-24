@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import styles from './banner.module.css'
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import useUserStore from '@/libs/userStore';
 
 export default function Banner() {
     const cover = ['/img/cover.jpg','/img/cover2.jpg','/img/cover3.jpg','/img/cover4.jpg','/img/cover5.jpg'];
