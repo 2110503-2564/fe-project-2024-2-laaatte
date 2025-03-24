@@ -36,10 +36,16 @@ export const authOptions:AuthOptions = {
     session : { strategy : 'jwt' },
     callbacks: {
       async jwt({token,user}) {
+        if (user?.role) {
+          token.role = user.role; // Add role to JWT token if needed
+        }
         return {...token,...user}
       },
       async session({session, token, user}) {
         session.user = token as any
+        if (user?.role) {
+          session.user.role = user.role; // Add role to session
+        }
         return session
       },
       async redirect({ url, baseUrl }) {

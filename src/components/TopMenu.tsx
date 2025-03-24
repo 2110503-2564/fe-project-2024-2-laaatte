@@ -9,7 +9,9 @@ import Link from 'next/link';
 export default async function TopMenu() {
 
     const session = await getServerSession(authOptions)
-
+    const userRole = session?.user?.role;
+    console.log(userRole)
+    
     return (
         <div className={styles.menucontainer}>
             <Link href={'/'}>
@@ -22,8 +24,12 @@ export default async function TopMenu() {
             </Link>
             <TopMenuItem title='Campground' pageRef='/campground'/>
             <TopMenuItem title='Reservation' pageRef='/reservations'/>
+            <TopMenuItem title='Logs' pageRef='/logs'/>
             <div className='flex flex-row absolute right-0 h-full'>
             <TopMenuItem title='My Reservation' pageRef='/myreservation'/>
+            
+
+            
             {
                 session ? 
                 <MuiLink href="/api/auth/signout">
@@ -49,4 +55,5 @@ export default async function TopMenu() {
             </div>
         </div>
     );
+    
 }
