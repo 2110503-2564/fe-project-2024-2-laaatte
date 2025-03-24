@@ -16,9 +16,9 @@ export default function SelectCampgroundCatalog({
     if (!campgroundJson) return <div>Loading...</div>;
 
     return (
-        <div className="w-full max-w-6xl mx-auto px-4 overflow-visible">
+        <div className="w-full max-w-7xl mx-auto px-4 overflow-visible">
             <Swiper
-                className="tranding-slider"
+                className="!overflow-visible tranding-slider"
                 effect="coverflow"
                 grabCursor={true}
                 centeredSlides={true}
@@ -48,7 +48,7 @@ export default function SelectCampgroundCatalog({
             >
                 {
                     campgroundJson.data.map((campgroundItem: CampgroundItem) => (
-                        <SwiperSlide className="h-[400px] lg:h-[500px]" key={campgroundItem.id}>
+                        <SwiperSlide className="h-[400px] lg:h-[500px] !w-[280px] md:!w-[320px] xl:!w-[360px]" key={campgroundItem.id}>
                             <div 
                                 onClick={() => onSelectCampground(campgroundItem.id)}
                                 className="cursor-pointer p-4 transition duration-300 hover:scale-105"

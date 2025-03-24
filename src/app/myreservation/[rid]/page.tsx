@@ -65,7 +65,7 @@ export default function Reservations({params} : {params : {rid:string}}) {
                 setShowPopup(true);
                 setTimeout(() => {
                     setShowPopup(false);
-                    router.push('/myreservation');
+                    router.replace('/myreservation');
                 }, 2000);
             }
             } catch (error: any) {
