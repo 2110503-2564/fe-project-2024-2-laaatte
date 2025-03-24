@@ -14,7 +14,7 @@ export default async function createReservation(campgroundId:string, token:strin
     console.log(respone)
 
     if (!respone.ok)
-        throw new Error('Failed to Log-in')
+        throw new Error('Failed to create reservation')
 
     return respone.json()
 }   

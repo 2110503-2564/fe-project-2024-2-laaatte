@@ -5,7 +5,7 @@ export default async function getCampgrounds() {
     const respone = await fetch(`${process.env.BACKEND_URL}/api/v1/campgrounds`, {next: {tags: ['campgrounds']}})
 
     if(!respone.ok) {
-        throw new Error('Failed to fetch cars');
+        throw new Error('Failed to fetch campgrounds');
     }
     
     return await respone.json()
