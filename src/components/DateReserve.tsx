@@ -18,7 +18,7 @@ export default function DateReserve({onDateChange, onTimeChange}:
                 <DatePicker
                 className="bg-white"
                 value={reserveDate}
-                disablePast
+                // disablePast  //to show bad reservation
                 onChange={(value) => {
                     setReserveDate(value)
                     onDateChange(value)

@@ -15,11 +15,15 @@
 .logoimg {
     height: 100%;
     width: auto;
-    transition: transform 0.3s ease-in-out;
+    border-radius: 0.25rem;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+    will-change: transform, box-shadow, filter;
 }
 
 .logoimg:hover {
     transform: scale(1.1); /* Slight zoom on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Soft shadow */
+    filter: brightness(1.1); /* Slight glow */
 }
 
 .itemcontainer {

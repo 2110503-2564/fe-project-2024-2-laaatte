@@ -7,7 +7,7 @@ import { use } from 'react';
 export default function LogsPage() {
   const { data: session } = useSession();
   const user = useUserStore((state) => state.user)
-  console.log(user?.data)
+  // console.log(user?.data)
 
   // If the session does not exist or the user doesn't have a role, handle it gracefully
   if (user?.data.role !== 'admin' ) {

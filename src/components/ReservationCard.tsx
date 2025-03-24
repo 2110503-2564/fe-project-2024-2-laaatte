@@ -54,7 +54,7 @@ export default function ReservationCard({ReservationData} :
         <div className="flex-1 space-y-2">
           {
             user?.data.role == 'admin' ?
-            <div className="text-lg text-red-600 font-semibold">
+            <div className="bg-slate-100 text-slate-800 px-4 py-2 rounded-md text-md font-medium shadow-sm inline-block">
               Owner : {ReservationData.user.name} ({ReservationData.user.email})
             </div> : null
           }
@@ -68,12 +68,14 @@ export default function ReservationCard({ReservationData} :
           <div className="text-md font-semibold text-gray-700">Date  :  {dayjs(ReservationData.rDate.toString()).format('DD/MM/YYYY HH:mm')}</div>
           {/* Buttons */}
           <div className="flex flex-row justify-center items-center gap-x-8 mt-10">
-            <button className="border border-black rounded-lg px-6 py-2 text-red-500 font-bold hover:bg-red-100"
+            <button 
+              className="rounded-lg px-6 py-2 font-bold text-white bg-sky-500 hover:bg-sky-600 transition-colors duration-200"
               onClick={() => router.push(`/myreservation/${ReservationData._id}`)}>
               Update
             </button>
-            <button className="border border-gray-400 rounded-lg px-6 py-2 text-red-600 font-bold hover:bg-red-200"
-            onClick={handleDelete}>
+            <button 
+              className="rounded-lg px-6 py-2 font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition-colors duration-200"
+              onClick={handleDelete}>
               Delete
             </button>
           </div>

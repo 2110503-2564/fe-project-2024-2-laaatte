@@ -59,6 +59,13 @@ export default function Reservations() {
         const jsDate = fullDateTime.toDate()
         console.log('Submitting form:', jsDate);
 
+        const now = new Date();
+        if (jsDate < now) {
+            alert("Reservation time cannot be in the past.");
+            setLoading(false);
+            return;
+          }
+
         try {
             const response = await createReservation(c_id, session?.user.token, jsDate, session?.user._id);
             console.log('Reservation Response:', response);
@@ -99,7 +106,7 @@ export default function Reservations() {
                     <div className="text-md text-left text-gray-600">Select a Day to Visit This Campground</div>
                 </div>
                 <DateReserve onDateChange={(value:Dayjs)=>{setReserveDate(value)}} onTimeChange={(value:Dayjs)=>{setTime(value)}}></DateReserve>
-                {c_id && //if dont have c_id dont show button reserve
+                { //if dont have c_id dont show button reserve
                     <button className={`block rounded-md px-3 py-2 mt-4 text-white shadow-small
                     ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-indigo-600'}`}
                         onClick={handleSubmit}
