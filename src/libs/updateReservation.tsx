@@ -1,4 +1,4 @@
-export default async function updateReservation(reserve_id:string, token:string, reservationDate:Date) {
+export default async function updateReservation(reserve_id:string, token:string, reservationDate:Date,cid:string) {
     const respone = await fetch(`${process.env.BACKEND_URL}/api/v1/reserves/${reserve_id}`, {
         method : "PUT",
         headers: {
@@ -6,7 +6,8 @@ export default async function updateReservation(reserve_id:string, token:string,
             "Content-Type" : "application/json"
         },
         body: JSON.stringify({
-            rDate : reservationDate
+            rDate : reservationDate,
+            campground : cid
         }),
     })
 

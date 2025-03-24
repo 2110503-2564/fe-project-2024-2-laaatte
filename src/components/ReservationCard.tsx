@@ -68,7 +68,8 @@ export default function ReservationCard({ReservationData} :
           <div className="text-md font-semibold text-gray-700">Date  :  {dayjs(ReservationData.rDate.toString()).format('DD/MM/YYYY HH:mm')}</div>
           {/* Buttons */}
           <div className="flex flex-row justify-center items-center gap-x-8 mt-10">
-            <button className="border border-black rounded-lg px-6 py-2 text-red-500 font-bold hover:bg-red-100">
+            <button className="border border-black rounded-lg px-6 py-2 text-red-500 font-bold hover:bg-red-100"
+              onClick={() => router.push(`/myreservation/${ReservationData._id}`)}>
               Update
             </button>
             <button className="border border-gray-400 rounded-lg px-6 py-2 text-red-600 font-bold hover:bg-red-200"

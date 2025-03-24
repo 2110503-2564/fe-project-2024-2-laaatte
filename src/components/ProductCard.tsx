@@ -3,7 +3,7 @@ import InteractiveCard from './InteractiveCard';
 
 export default function ProductCard({campgroundName, imgSrc, campgroundProvince } : 
     {campgroundName:string, imgSrc:string, campgroundProvince:string}) {
-
+        
     return (
         <InteractiveCard contentName={campgroundName}>
             <div  className='w-full h-[70%] relative rounded-t-lg'> 

@@ -8,6 +8,8 @@ import createReservation from "@/libs/createReservation";
 import { useSession } from "next-auth/react";
 import getUserProfile from "@/libs/getUserProfile";
 import { useRouter } from "next/navigation";
+import SelectCampgroundCatalog from "@/components/SelectCampgroundCatalog";
+import getCampgrounds from "@/libs/getCampgrounds";
 
 
 export default function Reservations() {
@@ -18,27 +20,35 @@ export default function Reservations() {
     const campground = urlParams.get('name')
     const picture = urlParams.get('picture')
 
-    useEffect(() => {
-        if (!cid) {
-          router.push('/campground'); // 👈 Redirect if no cid
-        }
-        }, [cid, router]);
-
-
+    const [c_id, setC_id] = useState<string|null>(cid)
+    const [campgrounds, setCampgrounds] = useState<any>(null);
     const [reserveDate, setReserveDate] = useState<Dayjs|null>(null)
     const [time, setTime ] = useState<Dayjs|null>(null)
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setLoading] = useState(false);
-
     const {data : session} = useSession();
-    if (!session?.user.token || !cid) 
+
+    if (!session?.user.token) 
         return
+
+    useEffect(() => {
+            const fetchCampgrounds = async () => {
+                const data = await getCampgrounds();
+                setCampgrounds(data);
+            };
+            fetchCampgrounds();
+        }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
          e.preventDefault();
 
         if (!reserveDate || !time) {
             alert("Please select Day or Time")
+            return
+        }
+
+        if (!c_id) {
+            alert("Please select Campground")
             return
         }
 
@@ -50,7 +60,7 @@ export default function Reservations() {
         console.log('Submitting form:', jsDate);
 
         try {
-            const response = await createReservation(cid, session?.user.token, jsDate, session?.user._id);
+            const response = await createReservation(c_id, session?.user.token, jsDate, session?.user._id);
             console.log('Reservation Response:', response);
     
             if (!response.success)
@@ -75,20 +85,21 @@ export default function Reservations() {
         <main className="beautiful flex flex-col items-center">
             <div className="text-2xl font-medium py-4">New Reservation</div>
             <div className="flex flex-col items-center p-2">
-                <div className="text-lg font-medium">Campground : {campground}</div>
-                <Image 
-                src={`https://drive.google.com/uc?export=view&id=${picture}`}
-                alt="Campground Image"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="rounded-lg beautiful w-[50%] mt-4"
-                />
+                <div className="py-2">
+                    <SelectCampgroundCatalog campgroundJson = {campgrounds} onSelectCampground={(id: string) => setC_id(id)} />
+                </div>
+                {c_id && campgrounds && (
+                    <div className="text-md text-green-600">
+                        Selected Campground: {
+                            campgrounds.data.find((c: any) => c.id === c_id)?.name ?? 'Unknown'
+                        }
+                    </div>
+                )}
                 <div className="w-fit mt-6">
                     <div className="text-md text-left text-gray-600">Select a Day to Visit This Campground</div>
                 </div>
                 <DateReserve onDateChange={(value:Dayjs)=>{setReserveDate(value)}} onTimeChange={(value:Dayjs)=>{setTime(value)}}></DateReserve>
-                {cid && //if dont have cid dont show button reserve
+                {c_id && //if dont have c_id dont show button reserve
                     <button className={`block rounded-md px-3 py-2 mt-4 text-white shadow-small
                     ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-indigo-600'}`}
                         onClick={handleSubmit}

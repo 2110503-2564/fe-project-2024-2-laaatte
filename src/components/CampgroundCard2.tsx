@@ -1,5 +1,4 @@
 'use client'; // เพิ่มบรรทัดนี้เพื่อบอกว่าเป็น Client Component
-
 import Link from "next/link";
 import ProductCard from "./ProductCard";
 import { CampgroundItem, CampgroundJson } from "../../interface";
