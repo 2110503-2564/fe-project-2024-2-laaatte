@@ -28,7 +28,7 @@ export default function CampgroundCard({ campgroundJson }: { campgroundJson: Cam
                 grabCursor={true}
                 centeredSlides={true}
                 loop={true}
-                slidesPerView={3}  // ปรับให้แสดง 3 สไลด์
+                slidesPerView="auto" 
                 spaceBetween={30}  // ระยะห่างระหว่างสไลด์
                 coverflowEffect={{
                     rotate: 0,
@@ -65,7 +65,7 @@ export default function CampgroundCard({ campgroundJson }: { campgroundJson: Cam
             >
                 {
                     campgroundCard.data.map((campgroundItem: CampgroundItem) => (
-                        <SwiperSlide  className="h-[400px] lg:h-[500px]" key={campgroundItem.id}>
+                        <SwiperSlide  className="!w-[280px] sm:!w-[320px]" key={campgroundItem.id}>
                             <Link href={`/campground/${campgroundItem.id}`} 
                                 className="w-[100%] sm:w-[50%] md:w-[30%] lg:w-[25%] p-2 sm:p-4 lg:p-8">
                                 <ProductCard 

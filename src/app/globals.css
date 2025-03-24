@@ -174,5 +174,5 @@ a {
 }
 
 .swiper {
-  overflow: visible !important;
+  overflow: visible ;
 }
