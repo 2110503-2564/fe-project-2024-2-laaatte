@@ -76,15 +76,6 @@ const AdminLogs: React.FC<AdminLogsProps> = ({ currentUserRole }) => {
       }
     }, [currentUserRole, session]);
 
-  if (currentUserRole !== 'admin') {
-    return (
-      <Card className="p-6 text-center">
-        <h2 className="text-xl font-semibold">Access Denied</h2>
-        <p>You do not have permission to view logs.</p>
-      </Card>
-    );
-  }
-
   if (loading) {
     return (
       <Card className="p-6 flex items-center justify-center gap-2">
@@ -118,7 +109,8 @@ const AdminLogs: React.FC<AdminLogsProps> = ({ currentUserRole }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {logs?.data.map((log) => (
+        {
+          logs?.data.map((log) => (
             <TableRow key={log._id}>
               <TableCell>
                 <Badge variant="outline" className="capitalize">
@@ -129,8 +121,12 @@ const AdminLogs: React.FC<AdminLogsProps> = ({ currentUserRole }) => {
                 <div className="font-medium">{log.user.name}</div>
                 <div className="text-sm text-gray-500">{log.user.email}</div>
               </TableCell>
-              <TableCell>{log.reserve.campground.name}</TableCell>
-              <TableCell>{format(new Date(log.reserve.rDate), 'PPpp')}</TableCell>
+              <TableCell>
+                {log.reserve?.campground?.name ?? "---"}
+              </TableCell>
+              <TableCell>
+                {log.reserve?.rDate ? format(new Date(log.reserve.rDate), 'PPpp') : "---"}
+              </TableCell>
               <TableCell>{format(new Date(log.timestamp), 'PPpp')}</TableCell>
               <TableCell>
                 <Collapsible>
@@ -139,17 +135,23 @@ const AdminLogs: React.FC<AdminLogsProps> = ({ currentUserRole }) => {
                       <ChevronDown className="h-4 w-4" /> View
                     </button>
                   </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-2 bg-gray-50 p-2 rounded">
-                    <p><strong>Campground:</strong> {log.reserve.campground.name}</p>
-                    <p><strong>Province:</strong> {log.reserve.campground.province}</p>
-                    <p><strong>Telephone:</strong> {log.reserve.campground.telephone}</p>
-                    <p><strong>Reserve ID:</strong> {log.reserve._id}</p>
-                    <p><strong>Reserve Date:</strong> {format(new Date(log.reserve.rDate), 'PPpp')}</p>
-                  </CollapsibleContent>
+                  {log.reserve ? (
+                    <CollapsibleContent className="mt-2 bg-gray-50 p-2 rounded">
+                      <p><strong>Campground:</strong> {log.reserve.campground.name}</p>
+                      <p><strong>Province:</strong> {log.reserve.campground.province}</p>
+                      <p><strong>Telephone:</strong> {log.reserve.campground.telephone}</p>
+                      <p><strong>Reserve ID:</strong> {log.reserve._id}</p>
+                      <p><strong>Reserve Date:</strong> {format(new Date(log.reserve.rDate), 'PPpp')}</p>
+                    </CollapsibleContent>
+                  ) : (
+                    <CollapsibleContent className="mt-2 bg-gray-50 p-2 rounded text-gray-500 italic">
+                      No reservation details available.
+                    </CollapsibleContent>
+                  )}
                 </Collapsible>
               </TableCell>
             </TableRow>
-          ))}
+           ))}
         </TableBody>
       </Table>
     </Card>

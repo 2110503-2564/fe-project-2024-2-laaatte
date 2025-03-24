@@ -1,10 +1,11 @@
 export default async function fetchAdminLogs(token: string) {
-    const response = await fetch('https://campground-app-five.vercel.app/api/v1/logs', {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/logs`, {
         method : "GET",
         headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`, 
       },
+      cache: "no-store"
     });
   
     if (!response.ok) {

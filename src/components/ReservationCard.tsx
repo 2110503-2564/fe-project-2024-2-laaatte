@@ -4,11 +4,15 @@ import { ReservationItem } from '../../interface';
 import dayjs from 'dayjs';
 import { useSession } from 'next-auth/react';
 import deleteReservation from '@/libs/deleteReservation';
+import { useRouter } from 'next/navigation'
+import useUserStore from '@/libs/userStore';
 
 export default function ReservationCard({ReservationData} : 
     {ReservationData:ReservationItem}) {
 
         const { data: session } = useSession();
+        const user = useUserStore((state) => state.user)
+        const router = useRouter();
 
         const handleDelete = async (e: React.FormEvent) => {
             e.preventDefault();
@@ -27,6 +31,7 @@ export default function ReservationCard({ReservationData} :
         
               // Optional: Refresh page or re-fetch reservations
               alert('Reservation deleted successfully!');
+              router.refresh()
             } catch (err: any) {
               console.error('Delete failed:', err);
               alert(err.message || 'Failed to delete reservation');
@@ -47,6 +52,12 @@ export default function ReservationCard({ReservationData} :
   
         {/* Right: Details */}
         <div className="flex-1 space-y-2">
+          {
+            user?.data.role == 'admin' ?
+            <div className="text-lg text-red-600 font-semibold">
+              Owner : {ReservationData.user.name} ({ReservationData.user.email})
+            </div> : null
+          }
           <div className="text-xl font-bold">
             {ReservationData.campground.name}  
                 <div className="text-sm text-gray-500">
@@ -60,7 +71,8 @@ export default function ReservationCard({ReservationData} :
             <button className="border border-black rounded-lg px-6 py-2 text-red-500 font-bold hover:bg-red-100">
               Update
             </button>
-            <button className="border border-gray-400 rounded-lg px-6 py-2 text-red-600 font-bold hover:bg-red-200">
+            <button className="border border-gray-400 rounded-lg px-6 py-2 text-red-600 font-bold hover:bg-red-200"
+            onClick={handleDelete}>
               Delete
             </button>
           </div>
