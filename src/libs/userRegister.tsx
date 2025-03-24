@@ -16,7 +16,7 @@ export default async function userRegister(userName:string, userEmail:string, us
     console.log(respone)
 
     if (!respone.ok)
-        throw new Error('Failed to Log-in')
+        throw new Error('Failed to register')
 
     return respone.json()
 }   

@@ -1,3 +1,5 @@
+import { revalidateTag } from "next/cache"
+
 export default async function createReservation(campgroundId:string, token:string, reservationDate:Date, userId:string) {
     const respone = await fetch(`${process.env.BACKEND_URL}/api/v1/campgrounds/${campgroundId}/reserves`, {
         method : "POST",
@@ -14,7 +16,8 @@ export default async function createReservation(campgroundId:string, token:strin
     console.log(respone)
 
     if (!respone.ok)
-        throw new Error('Failed to Log-in')
+        throw new Error('Failed to create reservation')
 
+    
     return respone.json()
 }   

@@ -2,12 +2,14 @@
 import { create } from 'zustand'
 
 type User = {
-  _id: string
-  name: string
-  email: string
-  role: string
-  telephone: string
-  createdAt: string
+  data : {
+    _id: string
+    name: string
+    email: string
+    role: string
+    telephone: string
+    createdAt: string
+  }
 }
 
 type UserStore = {

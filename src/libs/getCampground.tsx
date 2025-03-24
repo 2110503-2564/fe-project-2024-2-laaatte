@@ -2,7 +2,7 @@ export default async function getCampground(id:string) {
     const respone = await fetch(`${process.env.BACKEND_URL}/api/v1/campgrounds/${id}`)
 
     if(!respone.ok) {
-        throw new Error('Failed to fetch cars');
+        throw new Error('Failed to fetch campground');
     }
     
     return await respone.json()

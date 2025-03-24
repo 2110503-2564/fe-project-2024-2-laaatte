@@ -15,10 +15,22 @@ export interface CampgroundJson {
 }
 
 export interface ReservationItem {
+    _id: string
     rDate : Date
-    user : ObjectId
-    campground : ObjectId
+    user : string
+    campground : {
+        _id: string;
+        name: string;
+        province: string;
+        telephone: string;
+        picture: string
+    }
     createdAt : Date
+}
+
+export interface ReservationJson {
+    count : number
+    data : ReservationItem[]
 }
 
 export interface LogItem {

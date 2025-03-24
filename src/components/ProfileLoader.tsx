@@ -9,15 +9,15 @@ export default function ProfileLoader() {
   const setUser = useUserStore((state) => state.setUser)
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (session?.user?.token) {
-        const profile = await getUserProfile(session.user.token)
-        setUser(profile)
-      }
-    }
+    if (!session?.user?.token) return
 
-    fetchProfile()
-  }, [session, setUser])
+    getUserProfile(session.user.token)
+      .then((profile) => setUser(profile))
+      .catch(() => {}) // silently fail
+
+  // run only once after mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) 
 
   return null // no UI, just logic
 }
